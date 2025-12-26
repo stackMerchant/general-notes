@@ -116,15 +116,3 @@ DDL (Data Definition Language): CREATE TABLE, ALTER TABLE, DROP TABLE
 DML (Data Manipulation Language): SELECT, INSERT, UPDATE, DELETE
 DCL (Data Control Language): GRANT, REVOKE
 TCL (Transaction Control Language): BEGIN, COMMIT, ROLLBACK
-
-
-## DBs guide:
-- MongoDB
-- Redis
-- Postgres
-- Distributed SQL: Cockroach, Yugabyte
-- NoSQL: DynamoDB, Scylla, Cassandra
-- Analytics: ClickHouse, DuckDB, BigQuery
-- Search: OpenSearch
-- Time-series: Timescale, VictoriaMetrics
-- Vector: PgVector, Milvus

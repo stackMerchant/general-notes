@@ -112,14 +112,3 @@ Application's access patterns and UX have a heavy influence on how data is model
 - Flexible and sparse schemas
 - Not for strict consistency and advanced query patterns, such as multi-table JOINs, adhoc aggregations
 
-
-## More Sources
-- [B Trees](https://www.youtube.com/watch?v=K1a2Bk8NrYQ)
-- [B Tree](https://www.youtube.com/watch?v=ownO77M4SWI)
-- [B+ Trees](https://www.youtube.com/watch?v=o_2psWN8k_c&t=57s)
-- [LSMT](https://www.youtube.com/watch?v=I6jB0nM9SKU)
-- [More on it](https://hackernoon.com/how-cassandra-stores-data-an-exploration-of-log-structured-merge-trees)
-- [LSMT](https://www.scylladb.com/glossary/log-structured-merge-tree/)
-- [Service Discovery](https://middleware.io/blog/service-discovery/)
-- [Taylor Swift Problem](https://www.educative.io/blog/taylor-swift-ticketmaster-meltdown)
-- [DB Data Structures](https://www.youtube.com/watch?v=W_v05d_2RTo)
