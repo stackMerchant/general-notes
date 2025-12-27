@@ -10,13 +10,11 @@
 | **MongoDB**    | Flexible NoSQL + speed       | **Writes:** 100k–500k (sharded)<br>**Reads:** 200k–1M | Medium, cache-dependent    | Sudden slowdown if cache misses       | Content metadata, user data, general NoSQL      |
 | **PostgreSQL** | Correctness & rich queries   | **Writes:** 5k–50k<br>**Reads:** 20k–100k             | Low–medium                 | Throughput collapses under contention | OLTP, transactions, joins, business data        |
 
-
 #### One-line mental model:
 - Cassandra: throughput-first
 - DynamoDB: latency-first
 - MongoDB: cache-first
 - PostgreSQL: correctness-first
-
 
 #### Compaction impact (Cassandra):
 - Harmless for append-only, time-series data
@@ -28,11 +26,11 @@
 - MongoDB
 - Redis
 - Postgres
-- Distributed SQL: Cockroach, Yugabyte
+- Distributed SQL: Cockroach, Yugabyte, Spanner
 - NoSQL: DynamoDB, Scylla, Cassandra
-- Analytics: ClickHouse, DuckDB, BigQuery
+- Analytics: ClickHouse, DuckDB, BigQuery, Druid, Pinot
 - Search: OpenSearch
-- Time-series: Timescale, VictoriaMetrics
+- Time-series: TimescaleDB, VictoriaMetrics, InfluxDB
 - Vector: PgVector, Milvus
 
 

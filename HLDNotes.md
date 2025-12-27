@@ -108,6 +108,56 @@
 - [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/job-scheduler)
 
 
-## 
+## Top K YouTube videos
 
+- Is K fixed or arbitrary?
+- Tumbling window OR Sliding window?
+- Last interval query OR Arbitrary interval query?
+- Consume view events from Kafka
+- Write DB entries batched by min, hour, day, month
+  - By writing in same entry for min, hour, day, month, OR
+  - Using Flink
+  - Pre-calculate, top K for each window by a cron, for last interval and preserve
+  - OR, add an index on (exactTimeWindow + views), where exactTimeWindow is which min, hour, day, ..., BUT writes will be bad then
+  - OR, save and send data to a separate store to be sorted and then stored
+- For scaling writes on DB, shard by videoId
+- For sliding window, if fixed window then +new -last, if arbitrary, then long running query
+- If approximations are allowed
+  - Can use CountMinSketch (CMS) + current list of sorted top K (+ buffer)
+  - Can be done by Flink
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/top-k)
+
+
+## Ticketmaster
+
+- Event/ticket CRUD, search for events
+- For booking do it in 2 phase, reserve and book, use distributed lock for booking, Redis
+- Other optimizations:
+  - Cache event info
+  - Optimize events search: DB -> CDC -> ElasticSerach
+  - Real time booking update use SSE
+  - Virtual waiting queues for big events maybe
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/ticketmaster)
+
+
+## Twitter
+
+- Profile service with following info
+- Tweet CRUD, with S3 + CDN for media
+- Replies separately, indexed on tweetId
+- For search, ElasticSearch + CDC on tweets
+- For timeline
+  - fan-out on write to follower timeline cache
+  - for celebrity, do not fan out, read on timeline
+- Security and monitoring (health check, logging, ELK, alerts)
+
+#### Sources
+- [Hello interview](https://www.youtube.com/watch?v=Nfa-uUHuFHg&list=PL5q3E8eRUieWtYLmRU3z94-vGRcwKr9tM&index=8)
+
+
+## 
 
