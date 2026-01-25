@@ -27,11 +27,13 @@
 - Redis
 - Postgres
 - Distributed SQL: Cockroach, Yugabyte, Spanner
-- NoSQL: DynamoDB, Scylla, Cassandra
+- NoSQL: DynamoDB, Scylla, Cassandra, RocksDB
 - Analytics: ClickHouse, DuckDB, BigQuery, Druid, Pinot
 - Search: OpenSearch
 - Time-series: TimescaleDB, VictoriaMetrics, InfluxDB
 - Vector: PgVector, Milvus
+- Neo4j
+- CouchDB
 
 
 ## Sources
@@ -45,3 +47,102 @@
 - [Taylor Swift Problem](https://www.educative.io/blog/taylor-swift-ticketmaster-meltdown)
 - [DB Data Structures](https://www.youtube.com/watch?v=W_v05d_2RTo)
 
+
+
+# Database Tech Cheat Sheet from AI (2024–2025)
+
+## OLTP / App Databases (SQL)
+
+* **PostgreSQL** – default choice, everywhere
+* **MySQL** – legacy but common
+* **CockroachDB** – global, strongly consistent SQL
+* **YugabyteDB** – distributed Postgres
+
+👉 Trend: SQL + horizontal scale
+
+---
+
+## NoSQL (High Scale / HA)
+
+* **DynamoDB** – serverless, cloud-native
+* **ScyllaDB** – fast Cassandra replacement
+* **Cassandra** – proven, ops-heavy
+* **HBase** – legacy
+
+👉 Trend: Managed or Scylla over Cassandra
+
+---
+
+## Document Stores
+
+* **MongoDB**
+* **Couchbase**
+
+👉 Trend: Postgres JSONB replacing many use cases
+
+---
+
+## Analytics / OLAP
+
+* **ClickHouse** – blazing fast, hot
+* **Snowflake / BigQuery / Redshift** – managed warehouses
+* **DuckDB** – local analytics
+
+👉 Trend: Columnar + cheap compute
+
+---
+
+## Time-Series
+
+* **Prometheus** – metrics
+* **TimescaleDB** – Postgres TS
+* **VictoriaMetrics** – scalable TS
+
+---
+
+## Search / Logs
+
+* **OpenSearch / Elasticsearch**
+* **Splunk**
+
+---
+
+## Streaming (Not DBs)
+
+* **Kafka**
+* **Redpanda** – simpler Kafka
+
+---
+
+## Vector / AI
+
+* **pgvector (Postgres)**
+* **Pinecone / Milvus / Weaviate**
+
+👉 Trend: Vectors inside Postgres
+
+---
+
+## Graph
+
+* **Neo4j**
+
+---
+
+## 🔥 Pick Fast
+
+* Default app DB → **Postgres**
+* Global SQL → **CockroachDB**
+* Massive writes → **DynamoDB / ScyllaDB**
+* Analytics → **ClickHouse**
+* AI / RAG → **Postgres + pgvector**
+
+---
+
+## Industry Direction
+
+* SQL is back
+* Distributed SQL > sharding
+* ClickHouse dominates analytics
+* Vector search goes mainstream
+* Hadoop-era tech fading

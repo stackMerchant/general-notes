@@ -144,6 +144,102 @@
 - [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/ticketmaster)
 
 
+## Uber
+
+- Upon estimate request, create Ride, then confirm estimate and start matching
+- Nearby driver gets notified (like Firebase), driver updates their location periodically, accpets and gets matched
+- For location use Geohashing (Redis) instead of PostGIS (postgres) (Quad Trees)
+- For one to one matching, use distributed lock with TTL (Redis) or high throughput DB like DynamoDB
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/uber)
+
+
+## Yelp
+
+- Fast search for business (location + full text), then view, then review
+- Business CRUD and review separate
+- [Approach 1] PostGIS + pg.trgm, both extensions of postgres to search faster
+- [Approach 2] Durable storage -> CDC (Kafka + Worker) -> ElasticSearch (for fast search)
+- Use ElasticSearch for:
+  - geospatial index
+  - inverted index on full text
+  - b-tree for categories
+- Avg review, solve with saving total number of reviews
+- 1 review per user, use DB unique constraint
+- Location will be searched by string, convert it to lat-long, or save location heirarchy in business entity
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/yelp)
+
+
+## Web Crawler
+
+- Crawl all efficiently under X days, so that can go again
+- Crawl full web politely from seed urls, maybe have fetch rate-limiter based on domain
+- Pull a url from queue, fetch, store, put on processing queue, process, store processed data
+- Maintain url and domain level metadata
+- For queue, use SQS as have retry and backoff
+- For proper ordering and queueing of urls to be fetched
+  - save domain wise url to be fetched in DB, to be picked periodically
+- Estimate core crawler count based on network bandwidth
+- Can do DNS caching, rate-limiting, round-robin bw providers
+- For efficieny, do not crawl/process already crawled/processed page
+  - have last crawl time in url
+  - have html hash in row
+- Have depth to avoid being trapped on a domain and keep crawling it
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/web-crawler)
+
+
+## Dropbox / Google Drive with local file system client
+
+- Resumable upload/download (chunking), list, view items, sync
+- Upload/download via S3 key (looks like path), via presigned url, multi-part upload
+- Update upload status by S3 notifications (or by trust client and verify with S3)
+- Client sync through sync service, periodic state hash check or state change
+- Sync only updated chunk
+- Event bus for version history, it contains all change events
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/dropbox)
+
+
+## Youtube
+
+- Upload and save just like Dropbox above, video in S3, metadata in a DB
+- After save in S3, for low bandwidth downloads
+  - chunk it in 2-10s small videos
+  - convert it to varying resolution like 240p ... 4k
+  - udpate video metadata with chunk info
+- Use CDN for popular videos
+- Streaming protocols
+  - HLS
+  - DASH
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/youtube)
+
+
+## FB posts and search
+
+- Functionality: Post, Like, Fast Search with keyword, Sort by time and likes
+- Post and like through service, store separately in DBs, not tighly relational
+- Note: Do not need to do like validation with DB, instead sign post info while showing, like who when, and verify at read
+- For scale use maybe
+  - GSI, or
+  - 2 tables with primary keys (user, post) and (post, user)
+- CDC from DB into search index store through a ingestion service
+  - post needs to be tokenized (basically processed) and count is less
+  - like count far more than posts, likes can be batched, do intelligent batching for posts which have very less likes
+- Store search index on a Redis cluster, partition by keyword, for hot partition add 1....N in key maybe
+- Store keyword to sorted posts list by createdAt & likes
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/fb-post-search)
+
+
 ## Twitter
 
 - Profile service with following info
@@ -159,5 +255,48 @@
 - [Hello interview](https://www.youtube.com/watch?v=Nfa-uUHuFHg&list=PL5q3E8eRUieWtYLmRU3z94-vGRcwKr9tM&index=8)
 
 
-## 
+## FB new feed
 
+- Create posts, follow each other and generate feed, focus only on these
+- Save POSTS with GSI (createdBy, createdAt)
+- Save FOLLOWING info as
+  - (followingUser, followedUser), and
+  - GSI (followedUser, followingUser)
+  - NOTE: relation is still uni-directional
+- Feed will read followed users and then post for those users, GSI from POSTS
+- But not good for too many following, have a precomputed feed at the time of post creation
+- For too many followers, they'll poll posts at generation
+- For hot posts, add a cache aggressively
+- Do not use CDN for posts
+  - cause post id and signed visibility token is not available at that level close to user
+  - also post content is not too much to put in CDN, images / videos are already in CDN
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/fb-news-feed)
+
+
+## Instagram (Twitter + Youtube)
+
+- For post creation, follow each other & feed, refer to twitter and FB news feed
+- For post media delivery, follow Youtube
+- Few additions on top of above design is below, feed storage and its update on follow/unfollow
+- On unfollow, what happens with precomputed feed:
+  - Put a task in queue, have background worker to maybe clean it
+  - Slightly long persistent cache for unfollow events, and filter at feed generation
+  - Offload instant filtering to client itself
+- On follow:
+  - Put the new user in celebrity list with a TTL
+  - New posts will be part of precomputed feed
+- For storing precomputed feed:
+  - Store in Cassandra (append only), with key (readingUserId, createdAt)
+  - Also have postId and creatorId (to accomodate unfollow)
+  - For old post expiry use TTL in Cassandra
+  - For seen posts, have a mix of cursors, heuristics like bloom filters
+  - A solution for exact correctness, store all seen windows, merge them on overlap, but not worth it
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/instagram)
+- [Meta's Tao](https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/)
+
+
+## 
