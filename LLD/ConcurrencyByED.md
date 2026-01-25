@@ -1,9 +1,6 @@
-# Multi threading / Concurrency
+# Concurrency (by ED)
 
-
-## Java multi threading notes:
-
-From [Engineering Digest series](https://www.youtube.com/watch?v=091vJWjl1A4&list=PLA3GkZPtsafYhmrZR_1nmQqfFSnkftOud)
+By [Engineering Digest series](https://www.youtube.com/watch?v=091vJWjl1A4&list=PLA3GkZPtsafYhmrZR_1nmQqfFSnkftOud)
 
 Key concepts:
 - Program, process, thread
