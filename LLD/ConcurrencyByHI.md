@@ -9,7 +9,7 @@ Concurrency starts with a basic fact: threads in the same process share memory
 ### The Toolbox:
 
 #### Atomics
-```java
+``` java
 import java.util.concurrent.atomic.AtomicInteger;
 
 AtomicInteger counter = new AtomicInteger(0);
@@ -18,7 +18,7 @@ counter.incrementAndGet();  // Thread-safe increment
 
 #### Locks (mutexes)
 
-```java
+``` java
 synchronized (lock) {
     // Only one thread can be here at a time
     balance += amount;
@@ -27,7 +27,7 @@ synchronized (lock) {
 
 #### Semaphores
 
-```java
+``` java
 import java.util.concurrent.Semaphore;
 
 Semaphore permits = new Semaphore(5);  // Allow 5 concurrent operations
@@ -41,7 +41,7 @@ try {
 
 #### Condition Variables
 
-```java
+``` java
 synchronized (lock) {
     while (!condition) {
         lock.wait();  // Release lock and sleep
@@ -50,7 +50,7 @@ synchronized (lock) {
 }
 ```
 
-```java
+``` java
 /* When you want to avoid waking every thread, want to wake only specific threads */
 
 import java.util.ArrayDeque;
@@ -100,7 +100,7 @@ public class BoundedQueue<T> {
 
 Or Array Blocking Queues for strict FIFO
 
-```java
+``` java
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
