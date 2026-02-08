@@ -44,6 +44,16 @@
 - [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/fb-live-comments)
 
 
+## Leetcode
+
+- List/view/submit problems + live leaderboard, save all in DB
+- DB -> CDC -> Live leaderboard cache
+- Put submissions on SQS -> worker -> container (for security, with timeouts)
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/leetcode)
+
+
 ## Ticketmaster
 
 - Event/ticket CRUD, search for events
@@ -203,7 +213,7 @@
   - GSI, or
   - 2 tables with primary keys (user, post) and (post, user)
 - CDC from DB into search index store through a ingestion service
-  - post needs to be tokenized (basically processed) and count is less
+  - post needs to be tokenized for search (basically processed) and count is less
   - like count far more than posts, likes can be batched, do intelligent batching for posts which have very less likes
 - Store search index on a Redis cluster, partition by keyword, for hot partition add 1....N in key maybe
 - Store keyword to sorted posts list by createdAt & likes
@@ -280,6 +290,8 @@
 - For queue, use SQS as have retry and backoff
 - For proper ordering and queueing of urls to be fetched
   - save domain wise url to be fetched in DB, to be picked periodically
+    - Bad solution: Each domain has own queue, pick periodically from it, bad because all have their own cron
+    - Better solution: Put domain in redis with timeout, listen on its eviction, pop a url from domain level queue
 - Estimate core crawler count based on network bandwidth
 - Can do DNS caching, rate-limiting, round-robin bw providers
 - For efficieny, do not crawl/process already crawled/processed page
@@ -311,3 +323,53 @@
 
 #### Sources
 - [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/top-k)
+
+
+## Price Tracking (e.g. CamelCamelCamel)
+
+- FR: Track price change history and notify subscribe users on threshold change
+- Store all Amazon products in DB, with metadata like last price refresh
+- Store price changes in time series DB (with periodic aggreagation), but how do we get this?
+- Have a intelligent scheduler based on following:
+  - frequency
+  - last scrap time
+  - user interest
+- A crawler will check and update price history and product metadata
+- Can get price history from browser extension as well, trust and verify, or mark dirty
+- For subscription, save them in DB and send them mail on price updates
+- Get price updates from DB CDC + processor, throttled and batched update mailing
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/camelcamelcamel)
+
+
+## Rate Limiter
+
+- Can limit on Ip, UserId, ApiKey
+- Can return 429 + http headers like X-RateLimit-<somethings>
+- Algos (can be done in Redis):
+  - Fixed Window Counter
+  - Sliding Window Log
+  - Sliding Window Counter
+  - Token Bucket (steady fill OR leaking bucket)
+- Add distributed Redis rate limiter at api gateway layer, Lua scripts for Atomic updates
+- Scale: Consistent hashing to distribute users, or use Redis Cluster to handle sharding
+- Fault tolerant: Replication and fail open / fail close
+- Low latency: connection pooling
+- For dynamic rules, API Gateway  will have ZooKeeper with cache
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/distributed-rate-limiter)
+
+
+## Tinder
+
+- Entities: Profile, Feed, Swipe, Match
+- Profile service for profile CRUD
+- Swipes' TPS is high so append type store, Cassandra or Postgres
+- Users can update locations and then get feed based on location, geospatial index in Postgres/ElasticSearch
+- Precompute feed and aggressively load them
+
+#### Sources
+- [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/tinder)
+
