@@ -81,7 +81,7 @@ Dirty reads, non-repeatable reads, phantom reads, serialization anomaly
 
 
 ## When to Use PostgreSQL
-Start by it, devite if have strong reasons
+Start by it, deviate if have strong reasons
 
 ### When to Consider Alternatives:
 

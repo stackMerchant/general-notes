@@ -163,3 +163,19 @@ Batching, compression, but best is partitioning strategy
 2. [queues-vs-streams-vs-pubsub](https://eda-visuals.boyney.io/visuals/queues-vs-streams-vs-pubsub)
 
 
+# Some internals
+
+## Why high throughput?
+- Sequential disk writes, no random seeks
+- Partitioning
+- Batching
+- OS page cache on write, data is written to memory first (user ACKed), OS flushes to disk async later, relies more on replication
+- Zero-Copy transfer on read, uses OS's sendfile, send directly from kernel to socket
+- Minimal per message overhead, no post processing or indexing
+
+#### Uses I/O multiplexing
+- uses Java NIO
+- uses at Broker Network Layer
+- uses at Producer & Consumer Clients
+- uses because thousands of producers/consuemrs/replication traffic 
+- if used, not one thread one connection
