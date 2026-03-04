@@ -106,13 +106,13 @@ PostgreSQL might not be the best fit, such as cases requiring extreme write scal
 ## Summary
 
 ACID:
-Atomicity (All or Nothing)
-Consistency (Data Integrity)
-Isolation (Concurrent Transactions)
-Durability (Permanent Storage)
+- Atomicity (All or Nothing)
+- Consistency (Data Integrity)
+- Isolation (Concurrent Transactions)
+- Durability (Permanent Storage)
 
 SQL Command Types:
-DDL (Data Definition Language): CREATE TABLE, ALTER TABLE, DROP TABLE
-DML (Data Manipulation Language): SELECT, INSERT, UPDATE, DELETE
-DCL (Data Control Language): GRANT, REVOKE
-TCL (Transaction Control Language): BEGIN, COMMIT, ROLLBACK
+- DDL (Data Definition Language): CREATE TABLE, ALTER TABLE, DROP TABLE
+- DML (Data Manipulation Language): SELECT, INSERT, UPDATE, DELETE
+- DCL (Data Control Language): GRANT, REVOKE
+- TCL (Transaction Control Language): BEGIN, COMMIT, ROLLBACK
