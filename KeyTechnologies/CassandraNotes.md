@@ -20,12 +20,9 @@ Column =>
 - not all columns need to be specified per row like RDBs
 
 ### Primary Key
-Every row is represented uniquely by a primary key, it consists of one or more partition keys and may include clustering keys
-
-Partition Key => One or more columns that are used to determine what partition the row is in
-
-Clustering Key => Zero or more columns that are used to determine the sorted order of rows in a table
-
+- Every row is represented uniquely by a primary key, it consists of one or more partition keys and may include clustering keys
+- Partition Key => One or more columns that are used to determine what partition the row is in
+- Clustering Key => Zero or more columns that are used to determine the sorted order of rows in a table
 
 ## Key Concepts
 
@@ -58,20 +55,22 @@ uses consistent hashing with vnodes (virtual nodes)
 - Memtable: an in-memory, sorted data structure that stores write data, it is sorted by primary key of each row
 - SSTable: aka "Sorted String Table", immutable file on disk containing data that was flushed from a previous Memtable
 
-Write process: a Memtable houses recent writes, consolidating writes for a keys into a single row, and is occasionally flushed to disk as an immutable SSTable. A commit log serves as a write-ahead-log to ensure data isn't lost if it is only in the Memtable and the node goes down
+#### Write process
+A Memtable houses recent writes, consolidating writes for a keys into a single row, and is occasionally flushed to disk as an immutable SSTable. A commit log serves as a write-ahead-log to ensure data isn't lost if it is only in the Memtable and the node goes down
 
-Read process: for a particular key, Cassandra reads the Memtable first, which will have the latest data, if not, Cassandra leverages a bloom filter to determine which SSTables on disk might have the data, to get latest data
+#### Read process
+For a particular key, Cassandra reads the Memtable first, which will have the latest data, if not, Cassandra leverages a bloom filter to determine which SSTables on disk might have the data, to get latest data
 
-Writes are done at cell (row + column) level, so WAL and memtable contains cell updates
-And to read all cells of a row (a key), it fetches all cols' latest data from SSTs
-Writes are cell-level, cheap, append-only
-Row reads are merge-based, pulling latest column values from multiple files
+#### Notes:
+- Writes are done at cell (row + column) level, so WAL and memtable contains cell updates
+- And to read all cells of a row (a key), it fetches all cols' latest data from SSTs
+- Writes are cell-level, cheap, append-only
+- Row reads are merge-based, pulling latest column values from multiple files
+- Also all these cell read-writes are in [partition][row][column]
 
-Also all these cell read-writes are in [partition][row][column]
-
-
-Compaction: of SSTables periodically
-SSTable Indexing: stores files that point to byte offsets in SSTable files
+####
+- Compaction: of SSTables periodically
+- SSTable Indexing: stores files that point to byte offsets in SSTable files
 
 ### Gossip
 nodes routinely pick other nodes to gossip with, with a probabilistic bias towards "seed" nodes, eliminates the possibility that sub-clusters emerge
