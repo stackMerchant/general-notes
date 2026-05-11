@@ -258,7 +258,7 @@ Solutions:
     - uses OS primitives to put threads to sleep when no permits are available
     - then wakes them when permits are released
     - go-to for limiting concurrent operations
-    - if exception, rleease in finally
+    - if exception, release in finally
 - Resource Pooling (with Blocking Queue)
     - Expensive objects like DB connections
     - Can create objects upfront or lazily, prefer upfront to keep simple

@@ -356,7 +356,7 @@
 - Scale: Consistent hashing to distribute users, or use Redis Cluster to handle sharding
 - Fault tolerant: Replication and fail open / fail close
 - Low latency: connection pooling
-- For dynamic rules, API Gateway  will have ZooKeeper with cache
+- For dynamic rules, API Gateway will have ZooKeeper with cache
 
 #### Sources
 - [Hello interview](https://www.hellointerview.com/learn/system-design/problem-breakdowns/distributed-rate-limiter)

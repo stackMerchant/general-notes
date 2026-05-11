@@ -131,13 +131,14 @@ Done by OS, modern is time slicing for fairness, context switch happens here
 - Objects can live on stack or heap
 - No garbage collector
 
-## IO multiplexing
+## IO multiplexing (or Reactor Pattern)
 
 Think in terms of:
 - How does the thread wait?
 - How many threads do I need?
 - Who wakes me up?
 - Does kernel push or do I pull?
+- Used by Nginx, Redis, Node.js, Kafka, Netty, Spring WebFlux
 
 Select, poll, epoll [link](https://www.youtube.com/watch?v=WuwUk7Mk80E)
 
@@ -148,7 +149,6 @@ Select, poll, epoll [link](https://www.youtube.com/watch?v=WuwUk7Mk80E)
 - epoll has two main internal structures:
     - Interest list (RB-tree), all FDs you subscribed to
     - Ready list, only FDs currently ready
-- Used by Nginx, Redis, Node.js
 
 #### Note
 - In a thread-per-connection or process-per-connection model, you typically do not need epoll
