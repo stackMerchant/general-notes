@@ -114,6 +114,49 @@ Skipped:
 - CDC
 - Pattern matching
 
+## From Flink (Confluent course 2): Building with Java
+
+#### Job Lifecycle
+
+Job Lifecycles:
+- Run -> Created, submits job to cluster JobManager
+- Schedule -> Running, JobManager schedules the job
+- Finish -> Finished
+- Cancel -> Cancelled, non-graceful
+- Stop -> Suspended, graceful, saves state in savepoint file, can run again using savepoint file
+- Failure -> Failing -> Not restartable -> Failed
+
+Restart Strategy:
+- fixed-delay
+- failure-rate
+- exponential-delay
+
+#### Serialization and De-Serialization
+
+#### Transforming data in Flink
+- ProcessFunction, defines input -> output, attached to streams
+- Can also add simple functional programming ops:
+    - Map
+    - FlatMap
+    - Filter
+    - KeyBy (imagine groupBy) => events are shuffled, use KeyedProcessFunction now
+    - Reduce, after keyBy to aggregate values for a key
+
+#### Flink Data Sinks
+- Create sink and attach to stream like, stream.sinkTo(sink)
+
+#### Branching data streams
+- Union and connect
+- Can branch out and merge streams
+
+#### Windowing and watermarking
+- windowAll and window
+- tumbling window, sliding window, session window (start on event, close on inactivity gap)
+- window join
+
+#### Keyed States
+- Beware of key explosion, plan well and use TTL
+
 ## Other sources
 
 # Next
